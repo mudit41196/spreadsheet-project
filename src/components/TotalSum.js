@@ -11,7 +11,6 @@ function TotalSum({selection, data}) {
       let y = selection.y;
       while(y>=0) {
         const value = Number(columnData[row + y]);
-        console.log(value);
         if(!isNaN(value)) {
           total += value;
         }
