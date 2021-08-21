@@ -1,23 +1,13 @@
-import logo from './logo.svg';
-import './App.css';
+import SpreadSheet from "./components/SpreadSheet";
+
+const DEFAULT_COLUMNS = 25;
+const DEFAULT_ROWS = 25;
+
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <SpreadSheet rows={DEFAULT_ROWS} columns={DEFAULT_COLUMNS} />
     </div>
   );
 }

@@ -1,0 +1,39 @@
+.columnContainer {
+  display: inline-block;
+  border-right: 1px solid black;
+}
+
+.column {
+  width: 120px;
+  display: flex;
+  flex-direction: column;
+}
+
+.columnBox {
+  border-bottom: 1px solid black;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.button {
+  background: #f7e3b7;
+}
+
+.inputCell {
+  border: none;
+  width: 100%;
+  height: 40px;
+}
+
+.headerButton {
+  border: none;
+  width: 100%;
+  height: 48px;
+}
+
+.highlightCell {
+  border: 2px green solid;
+  border-radius: 2px;
+}

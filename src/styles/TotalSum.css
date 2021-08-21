@@ -1,0 +1,12 @@
+.totalContainer {
+  background: white;
+  box-shadow: 6px 8px 17px 1px #b8b6b6;
+  position: fixed;
+  z-index: 1;
+  border-radius: 2;
+  padding: 10px 20px;
+  bottom: 2px;
+  right: 2px;
+  min-width: 100px;
+  border: 1px solid black;
+}

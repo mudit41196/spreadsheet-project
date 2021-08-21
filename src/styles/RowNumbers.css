@@ -1,0 +1,18 @@
+.rowNumberBox {
+  border-bottom: 1px solid black;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.rowNumberContainer {
+  display: inline-block;
+  border-right: 1px solid black;
+}
+
+.rowNumbercolumn {
+  width: 50px;
+  display: flex;
+  flex-direction: column;
+}
