@@ -6,7 +6,7 @@ function Cell ({cellData, rowIndex, colIndex, handleDataChange, isSelected, hand
   useEffect(() => {
     changeText(cellData);
   }, [cellData]);
-
+  // const {text, changeText} = useChangeText(cellData); 
   const handleInputChange = (e) => {
     const {value} = e.target;
     changeText(value);

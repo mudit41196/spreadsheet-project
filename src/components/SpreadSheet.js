@@ -3,12 +3,13 @@ import RowNumbers from "./RowNumbers";
 import Column from "./Column";
 import ContextMenu from "./common/ContextMenu";
 import TotalSum from "./TotalSum";
+import SearchBox from "./SearchBox";
 import {convertColumnTitle, compareObjectEntryAsc, compareObjectEntryDesc} from "../utils/utils";
 import "../styles/SpreadSheet.css";
 
 const CONTEXT_MENU_TYPES = {
-  rowTitle: ["Add Row Top", "Add Row Bottom"],
-  columnTitle: ["Add Column Left", "Add Column Right", "Sort Col Asc", "Sort Col Desc"]
+  rowTitle: ["Add Row Top", "Add Row Bottom", "Delete Row"],
+  columnTitle: ["Add Column Left", "Add Column Right", "Sort Col Asc", "Sort Col Desc", "Delete Column"]
 }
 
 class SpreadSheet extends Component {
@@ -38,6 +39,7 @@ class SpreadSheet extends Component {
     this.handleContextActions = this.handleContextActions.bind(this);
     this.handleAlterSelection = this.handleAlterSelection.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
   }
 
   componentDidMount() {
@@ -114,6 +116,27 @@ class SpreadSheet extends Component {
 
 
   /*HANDLING AND DISPLAYING DATA STARTS HERE */
+
+  handleSearch(value) {
+    const {data, columns, rows} = this.state;
+    let searchCol, searchRow;
+    for(let j=0;j<columns;j++) {
+      const colData = data[j] || {};
+      for(let i=0;i<rows;i++) {
+        if(colData[i] == value) {
+          searchRow = i;
+          searchCol = j;
+          break;
+        }
+      }
+      if(searchRow || searchCol) {
+        break;
+      }
+    }
+    this.setState({selection: {row: searchRow, column: searchCol, x:0, y: 0}});
+    const searchCell = ((searchCol+1)*columns) + (searchRow+1) - 1;
+    document.getElementsByClassName("inputCell")[searchCell].scrollIntoView();
+  }
 
   handleAlterSelection(selectionObj) {
     this.setState({selection: {...selectionObj}});
@@ -243,6 +266,33 @@ class SpreadSheet extends Component {
     }, 0);
   }
 
+  deleteColumn() {
+    const {contextColumn, data, columns} = this.state;
+    setTimeout(() => {
+      const newData = {...data};
+      for(let i=contextColumn; i<columns-1;i++) {
+        newData[i] = {...data[i+1]}
+      }
+      delete newData[columns-1];
+      this.setState({columns: columns-1, data: newData});
+    }, 0);
+  }
+
+  deleteRow() {
+    const {contextRow, data, columns, rows} = this.state;
+    setTimeout(() => {
+      const newData = {...data};
+      for(let j=0;j<columns;j++) {
+        newData[j] = {...data[j]} || {}; //to handle untouched col
+        for(let i=contextRow;i<rows-1;i++) {
+          newData[j][i] = newData[j][i+1];
+        }
+        delete newData[j][rows-1];
+      }
+      this.setState({rows: rows-1, data: newData});
+    }, 0);
+  }
+
   /* CONTEXT MENU FUNCTIONS END HERE */
   
 
@@ -266,6 +316,12 @@ class SpreadSheet extends Component {
       case "Sort Col Desc":
         this.sortCol(compareObjectEntryDesc); // implemented for String comparision as given in assignment
         break;
+      case "Delete Row":
+        this.deleteRow();
+        break;
+      case "Delete Column":
+        this.deleteColumn();
+        break;
       default:
         return null;
     }
@@ -275,6 +331,7 @@ class SpreadSheet extends Component {
     const {x, y, contextVisible, contextMenu, rows, selection, data} = this.state;
     return (
       <div className="spreadsheetContainer">
+        <SearchBox handleSearch={this.handleSearch} />
         <TotalSum selection={selection} data={data} />
         <RowNumbers size={rows}/>
         {this.getColumns()}
